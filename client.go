@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/gorilla/websocket"
+	"github.com/cardigann/go-cloudflare-scraper"
 )
 
 type negotiationResponse struct {
@@ -83,7 +84,12 @@ func (self *Client) negotiate(scheme, address string) (negotiationResponse, erro
 
 	var negotiationUrl = url.URL{Scheme: scheme, Host: address, Path: "/signalr/negotiate"}
 
-	client := &http.Client{}
+	scraper, err := scraper.NewTransport(http.DefaultTransport)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client := &http.Client{Transport: scraper}
 
 	request, err := http.NewRequest("GET", negotiationUrl.String(), nil)
 	for k, values := range self.RequestHeader {

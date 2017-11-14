@@ -86,7 +86,7 @@ func (self *Client) negotiate(scheme, address string) (negotiationResponse, erro
 
 	scraper, err := scraper.NewTransport(http.DefaultTransport)
 	if err != nil {
-		log.Fatal(err)
+		response, err
 	}
 
 	client := &http.Client{Transport: scraper}
